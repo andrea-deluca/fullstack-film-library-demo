@@ -1,12 +1,12 @@
 # BigLab 2 - Class: 2022 AW1
 
-## Team name: TEAM_NAME
+## Team name: BYTECODERS
 
 Team members:
-* s123456 LASTNAME FIRSTNAME
-* s123456 LASTNAME FIRSTNAME 
-* s123456 LASTNAME FIRSTNAME
-* s123456 LASTNAME FIRSTNAME (delete line if not needed)
+* s302094 ANDRIANO DAVIDE
+* s302056 BELARDO ANNA LISA
+* s303906 DELUCA ANDREA
+* s303907 TAMBURO LUCA
 
 ## Instructions
 
@@ -43,3 +43,305 @@ Provide a short description of the API you designed, with the required parameter
 * [A (small) sample request, with body (if any)]
 * [A (small) sample response, with body (if any)]
 * [Error responses, if any]
+
+### APIs
+Hereafter, we report the designed HTTP APIs, also implemented in the project.
+
+### __List Films__
+
+#### `GET /api/films/all`
+
+Gets all films.
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "1",
+        "title": "Pulp Fiction",
+        "favorite": "1",
+        "watchdate": "2022-03-11",
+        "rating": "5",
+        "user": "1"
+    },
+
+    {
+        "id": "2",
+        "title": "21 Grams",
+        "favorite": "1",
+        "watchdate": "2022-04-30",
+        "rating": "4",
+        "user": "1"
+    },
+
+    ...
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
+
+
+#### `GET /api/films/favorite`
+
+Gets all favorite films, so with favorite field equals to 1 whitin the DB.
+
+##### Response body
+
+`HTTP status code 200 OK (success)`
+
+```
+[
+    {
+        "id": "1",
+        "title": "Pulp Fiction",
+        "favorite": "1",
+        "watchdate": "2022-03-11",
+        "rating": "5",
+        "user": "1"
+    },
+
+    {
+        "id": "2",
+        "title": "21 Grams",
+        "favorite": "1",
+        "watchdate": "2022-04-30",
+        "rating": "4",
+        "user": "1"
+    },
+
+    ...
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
+
+#### `GET /api/films/best-rated`
+
+Gets all best rated films.
+
+##### Response body
+
+`status 200 OK (success)`
+```
+[
+    {
+        "id": "1",
+        "title": "Pulp Fiction",
+        "favorite": "1",
+        "watchdate": "2022-03-11",
+        "rating": "5",
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
+
+#### `GET /api/films/seen-last-month`
+
+Gets all films seen last month.
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "2",
+        "title": "21 Grams",
+        "favorite": "1",
+        "watchdate": "2022-04-30",
+        "rating": "4",
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
+
+#### `GET /api/films/unseen`
+
+Gets all films unseen.
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "3",
+        "title": "Star Wars",
+        "favorite": "0",
+        "watchdate": "null",
+        "rating": "null",
+        "user": "1"
+    },
+    {
+        "id": "4",
+        "title": "Matrix",
+        "favorite": "0",
+        "watchdate": "null",
+        "rating": "null",
+        "user": "2"
+    }
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
+
+
+#### `GET /api/films/:id`
+
+Returns a film, given its id.
+
+##### **Request header:** req.params.id to retrieve id
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id":"1"
+        "title": "Pulp Fiction",
+        "favorite": "1",
+        "watchdate": "2022-03-11",
+        "rating": "5",
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 422 Unprocessable Entity` (fields validation error)
+
+#### `POST /api/films/add-film`
+
+Creates a new film
+
+##### **Request header:** has a line: `Content-Type: application/json`
+
+##### **Request body:** a JSON object containing title, favorite, watchdate, rating, user. Id is automatically assigned. 
+
+#### Response body 
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "6",
+        "title": " new film title",
+        "favorite": "1",
+        "watchdate": "2022-03-11",
+        "rating": "5",
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
+
+
+#### `PUT api/films/update-film/:id`
+
+Modifies a film, given its id.
+
+##### **Request header:** req.params.id to retrieve id
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "1",
+        "title": "Edited Movie",
+        "favorite": "0",
+        "watchdate": "2022-03-12",
+        "rating": "3",
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no film found error)
+- `HTTP status code 422 Unprocessable Entity` (fields validation error)
+
+#### `PUT api/films/update-favorite/:id`
+
+Changes the status of the film if it's favorite or not, given its id.
+
+##### **Request header:** req.params.id to retrieve id
+
+##### **Request body:** a JSON object containing title, favorite, watchdate, rating, user.
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "1",
+        "title": "Pulp Fiction",
+        "favorite": "1" (edited field),
+        "watchdate": "2022-03-12",
+        "rating": "3",
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no film found error)
+- `HTTP status code 422 Unprocessable Entity` (fields validation error)
+
+#### `PUT api/films/update-rating/:id`
+
+Changes the rating of the film , given its id.
+
+##### **Request header:** req.params.id to retrieve id
+
+##### **Request body:** a JSON object containing title, favorite, watchdate, rating, user.
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+```
+[
+    {
+        "id": "1",
+        "title": "Pulp Fiction",
+        "favorite": "0",
+        "watchdate": "2022-03-12",
+        "rating": "5" (edited field),
+        "user": "1"
+    }
+]
+```
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no film found error)
+- `HTTP status code 422 Unprocessable Entity` (fields validation error)
+
+
+#### `DELETE /api/delete-film/:id`
+
+Delete a film, given its id.
+
+##### **Request header:** req.params.id to retrieve id
+
+##### Response body
+
+`HTTP status code 200 OK` (success)
+
+##### Error responses
+- `HTTP status code 500 Internal Server Error` (generic server error)
+- `HTTP status code 404 Not Found` (no films found error)
