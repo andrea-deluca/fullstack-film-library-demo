@@ -19,8 +19,12 @@ const UpdateFilm = ({ updateFilm, library, showMessage }) => {
 
     const initialValues = {
         ...filmToEdit,
-        watchDateSwitch: filmToEdit.watchDate && true,
-        watchDate: filmToEdit.watchDate ? getDate(filmToEdit.watchDate) : getToday(),
+        plot: filmToEdit.plot ? filmToEdit.plot : "",
+        rating: filmToEdit.rating,
+        image: filmToEdit.image ? filmToEdit.image : "",
+        favorite: filmToEdit.favorite === 1 ? true : false,
+        watchDateSwitch: filmToEdit.watchdate ? true : false,
+        watchdate: filmToEdit.watchdate ? getDate(filmToEdit.watchdate) : getToday(),
     };
 
     return (
@@ -31,7 +35,7 @@ const UpdateFilm = ({ updateFilm, library, showMessage }) => {
                     <span className="m-0">Go back</span>
                 </Button>
                 <h1 className="fw-bold text-primary mb-5">Edit film</h1>
-                <FilmForm update updateFilm={updateFilm} initialValues={initialValues} showMessage={showMessage} />
+                <FilmForm update id={parseInt(filmID)} updateFilm={updateFilm} initialValues={initialValues} showMessage={showMessage} />
             </Col>
         </Row>
     );

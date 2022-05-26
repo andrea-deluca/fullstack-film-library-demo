@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { Formik, Form } from 'formik';
 
 // Helpers
-import { getFormattedDate, getToday } from '../helpers/date';
+import { getToday } from '../helpers/date';
 
 // Constants
 import filmForm from '../constants/filmForm';
@@ -13,8 +14,10 @@ import FilmSchema from '../validations/FilmSchema';
 
 // Components
 import Input from './Input';
+import axios from 'axios';
 
-const FilmForm = ({ addFilm, updateFilm, update, showMessage, ...props }) => {
+const FilmForm = ({ addFilm, updateFilm, update, showMessage, id, ...props }) => {
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const initialValues = update ? props.initialValues : {
@@ -23,27 +26,49 @@ const FilmForm = ({ addFilm, updateFilm, update, showMessage, ...props }) => {
         image: '',
         favorite: false,
         watchDateSwitch: false,
-        watchDate: getToday(),
-        score: '',
+        watchdate: getToday(),
+        rating: '',
     }
 
     const handleSubmit = (values) => {
+        setLoading(true);
+
         const film = {
             ...values,
-            watchDate: values.watchDateSwitch ? getFormattedDate(values.watchDate) : undefined,
-            score: parseInt(values.score),
+            favorite: values.favorite ? 1 : 0,
+            watchdate: values.watchDateSwitch ? values.watchdate : undefined,
+            rating: parseInt(values.rating),
+            user: 1
         };
 
-        update ? updateFilm(film) : addFilm(film);
-        update ? showMessage('Selected film has been successfully edited.') : showMessage('New film has been successfully inserted in your library.')
-
-        navigate(-1, { replace: true });
+        if (update) {
+            axios.put(`/api/films/update-film/${id}`, film)
+                .then(() => {
+                    showMessage('Selected film has been successfully edited.')
+                    navigate(-1, { replace: true });
+                    setLoading(false);
+                })
+                .catch(err => {
+                    console.log(err);
+                    setLoading(false);
+                })
+        } else {
+            axios.post('/api/films/add-film', film)
+                .then(() => {
+                    setLoading(false);
+                    showMessage('New film has been successfully inserted in your library.')
+                    navigate(-1, { replace: true });
+                })
+                .cathc(err => {
+                    console.log(err);
+                    setLoading(false);
+                })
+        }
     }
-
     return (
         <Formik initialValues={initialValues} validationSchema={FilmSchema} onSubmit={(values) => handleSubmit(values)}>
             {({ values, touched, isValid }) => {
-                const disabledSubmit = (!update && !touched.title && !touched.score) || !isValid;
+                const disabledSubmit = (!update && !touched.title && !touched.rating) || !isValid;
                 return (
                     <Form>
                         {filmForm.map((input, index) => {
@@ -67,6 +92,7 @@ const FilmForm = ({ addFilm, updateFilm, update, showMessage, ...props }) => {
                                 Reset
                             </Button>
                             <Button variant='primary' type='submit' className='px-4' disabled={disabledSubmit}>
+                                {loading && <Spinner animation='border' size='sm' as='span' role='status' aria-hidden='true' className='me-2' />}
                                 Save
                             </Button>
                         </div>

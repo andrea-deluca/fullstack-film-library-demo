@@ -13,7 +13,6 @@ module.exports = {
                     reject({ err, status: 500 });
                     return;
                 }
-
                 if (rows.length === 0) reject({ status: 404 });
                 else resolve({ films: rows, status: 200 });
             });
@@ -124,8 +123,9 @@ module.exports = {
 
     updateFilm: (data, id) => {
         return new Promise((resolve, reject) => {
-            const query = "UPDATE films SET title=?, favorite=?, watchdate=?, rating=?, user=? WHERE id=?";
-            db.run(query, [data.title, data.favorite, data.watchdate, data.rating, data.user, id], function (err) {
+            console.log(data, id)
+            const query = "UPDATE films SET title=?, plot=?, favorite=?, watchdate=?, rating=?, image=?, user=? WHERE id=?";
+            db.run(query, [data.title,  data.plot, data.favorite, data.watchdate, data.rating, data.image, data.user, id], function (err) {
                 if (err) reject({ err: err.message, status: 500 });
                 else resolve({ film: { id, ...data }, status: 200 });
             })

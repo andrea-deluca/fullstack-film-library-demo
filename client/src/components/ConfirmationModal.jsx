@@ -1,6 +1,6 @@
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner } from "react-bootstrap";
 
-const ConfirmationModal = ({ show, onHide, onConfirm }) => {
+const ConfirmationModal = ({ show, onHide, onConfirm, loading }) => {
     return (
         <Modal show={show} onHide={onHide} centered>
             <Modal.Header className="border-0">
@@ -18,6 +18,7 @@ const ConfirmationModal = ({ show, onHide, onConfirm }) => {
                     <span className="opacity-50">Close</span>
                 </Button>
                 <Button variant="danger" onClick={onConfirm} className='fw-bold rounded-3'>
+                    {loading && <Spinner animation='border' size='sm' as='span' role='status' aria-hidden='true' className='me-2' />}
                     <span className="text-light">Confirm</span>
                 </Button>
             </Modal.Footer>

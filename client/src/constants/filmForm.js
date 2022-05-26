@@ -39,13 +39,13 @@ const filmForm = [
     {
         id: 'add-film-watchdate',
         label: 'Watch date',
-        name: 'watchDate',
+        name: 'watchdate',
         type: 'date'
     },
     {
         id: 'add-film-score',
         label: 'Score',
-        name: 'score',
+        name: 'rating',
         as: 'select',
         options: [
             { value: '', label: 'Choose a score...' },

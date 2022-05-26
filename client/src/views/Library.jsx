@@ -15,19 +15,24 @@ import ServerError from '../views/ServerError';
 
 const Library = ({ library, setLibrary, updateLibrary, showMessage }) => {
     const [error, setError] = useState({});
+    const [dirty, setDirty] = useState(true);
+
     const { filter } = useParams();
 
     useEffect(() => {
-        axios.get(`/api/films/${filter}`)
-            .then(res => {
-                setLibrary(res.data);
-            })
-            .catch(err => {
-                console.log(err)
-                err.response.status === 404 && setLibrary([]);
-                err.response.status === 500 && setError({ show: true, message: err.message, error: err.response });
-            })
-    }, [filter]);
+        if(dirty){
+            axios.get(`/api/films/${filter}`)
+                .then(res => {
+                    setLibrary(res.data);
+                    setDirty(false);
+                })
+                .catch(err => {
+                    console.log(err)
+                    err.response.status === 404 && setLibrary([]);
+                    err.response.status === 500 && setError({ show: true, message: err.message, error: err.response });
+                })
+        }
+    }, [setLibrary, filter, dirty]);
 
     const filterMatched = filters.find(item => {
         return item.url.slice(1) === filter;
@@ -47,7 +52,7 @@ const Library = ({ library, setLibrary, updateLibrary, showMessage }) => {
         <Row className='p-4 my-4 flex-fill'>
             <SearchBar className="d-flex d-lg-none mb-5" />
             <Sidebar selectedFilter={filter} />
-            <FilteredLibrary library={library} updateLibrary={updateLibrary} showMessage={showMessage} />
+            <FilteredLibrary library={library} setDirty={setDirty} updateLibrary={updateLibrary} showMessage={showMessage} />
         </Row>
     );
 }

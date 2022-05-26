@@ -22,8 +22,8 @@ const FilmSchema = Yup.object().shape({
             /((http|ftp|https):\/\/)?([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:/~+#-]*[\w@?^=%&/~+#-])/,
             'Invalid URL'
         ),
-    watchDate: Yup.date().max(getToday(), 'Date must be before now'),
-    score: Yup.string().required('Required')
+    watchdate: Yup.date().max(getToday(), 'Date must be before now'),
+    rating: Yup.string().required('Required')
 });
 
 export default FilmSchema;

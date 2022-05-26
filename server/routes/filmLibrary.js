@@ -73,7 +73,7 @@ router.get("/films/:id", (req, res) => {
 router.post("/films/add-film", [
     check('title').not().isEmpty(),
     check('favorite').isInt({ min: 0, max: 1 }),
-    check('watchdate').isDate({ format: 'YYYY-MM-DD', strictMode: true }),
+    check('watchdate').isDate({ format: 'YYYY-MM-DD', strictMode: true }).optional(),
     check('rating').isInt({ min: 0, max: 5 })
 ], (req, res) => {
     const errors = validationResult(req)
@@ -92,7 +92,7 @@ router.post("/films/add-film", [
 router.put("/films/update-film/:id", [
     check('title').not().isEmpty(),
     check('favorite').isInt({ min: 0, max: 1 }),
-    check('watchdate').isDate({ format: 'YYYY-MM-DD', strictMode: true }),
+    check('watchdate').isDate({ format: 'YYYY-MM-DD', strictMode: true }).optional(),
     check('rating').isInt({ min: 0, max: 5 })
 ], (req, res) => {
     const errors = validationResult(req)
@@ -114,10 +114,7 @@ router.put("/films/update-film/:id", [
 
 //PUT /films/update-favorite/:id
 router.put("/films/update-favorite/:id", [
-    check('title').not().isEmpty(),
     check('favorite').isInt({ min: 0, max: 1 }),
-    check('watchdate').isDate({ format: 'YYYY-MM-DD', strictMode: true }),
-    check('rating').isInt({ min: 0, max: 5 })
 ], (req, res) => {
     const errors = validationResult(req)
     if (!errors.isEmpty()) return res.status(422).json({ errors: errors.array() });
@@ -138,9 +135,6 @@ router.put("/films/update-favorite/:id", [
 
 //PUT /films/update-rating/:id
 router.put("/films/update-rating/:id", [
-    check('title').not().isEmpty(),
-    check('favorite').isInt({ min: 0, max: 1 }),
-    check('watchdate').isDate({ format: 'YYYY-MM-DD', strictMode: true }),
     check('rating').isInt({ min: 0, max: 5 })]
     , (req, res) => {
         const errors = validationResult(req)
