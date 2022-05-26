@@ -1,5 +1,5 @@
 'use strict';
-
+const cors = require('cors');
 const express = require('express');
 const logger = require('morgan');
 
@@ -11,6 +11,7 @@ const app = express();
 
 // Set-up middlewares
 app.use(logger('dev'));
+app.use(cors());
 app.use(express.json());
 
 /* ---  APIs  --- */

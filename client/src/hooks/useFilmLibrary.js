@@ -1,10 +1,7 @@
 import { useState } from "react"
 
-// Constants
-import films from "../constants/films"
-
 const useFilmLibrary = () => {
-    const [library, setLibrary] = useState(films);
+    const [library, setLibrary] = useState([]);
 
     const setFavorite = (id) => {
         setLibrary(library.map(film => {
@@ -41,7 +38,7 @@ const useFilmLibrary = () => {
 
     const updateLibrary = { setFavorite, setRating, deleteFilm, addFilm, updateFilm }
 
-    return [library, updateLibrary];
+    return [library, setLibrary, updateLibrary];
 }
 
 export default useFilmLibrary;

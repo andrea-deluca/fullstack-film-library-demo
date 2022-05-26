@@ -5,6 +5,8 @@ import { faStar, faHeart, faTrash, faPencil } from '@fortawesome/free-solid-svg-
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
 
+import { getFormattedDate } from '../helpers/date';
+
 // Hooks
 import useModal from '../hooks/useModal';
 
@@ -43,15 +45,15 @@ const FilmCard = ({ film, deleteFilm, setFavorite, setRating, showMessage }) => 
                     <Card.Text className='fw-light text-dark'>{film.plot ? film.plot : 'Nessuna descrizione disponibile.'}</Card.Text>
                 </Card.Body>
                 <Card.Footer className='bg-white border-0 mb-3'>
-                    <Card.Text className='fw-light text-muted mt-3'>{film.watchDate ? `Seen ${film.watchDate}` : 'Unseen'}</Card.Text>
-                    {film.score > 0 && [...Array(film.score)].map((item, index) => {
+                    <Card.Text className='fw-light text-muted mt-3'>{film.watchdate ? `Seen ${getFormattedDate(film.watchdate)}` : 'Unseen'}</Card.Text>
+                    {film.rating > 0 && [...Array(film.rating)].map((item, index) => {
                         return <FontAwesomeIcon key={index} icon={faStar} className='text-secondary star-icon star-full me-1' onClick={() => {
-                            film.score === 1 ? setRating(film.id, index) : setRating(film.id, index + 1)
+                            film.rating === 1 ? setRating(film.id, index) : setRating(film.id, index + 1)
                         }
                         } />
                     })}
-                    {film.score ? [...Array(5 - film.score)].map((item, index) => {
-                        return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => setRating(film.id, film.score + index + 1)} />
+                    {film.rating ? [...Array(5 - film.rating)].map((item, index) => {
+                        return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => setRating(film.id, film.rating + index + 1)} />
                     }) : [...Array(5)].map((item, index) => {
                         return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => setRating(film.id, index + 1)} />
                     })}
