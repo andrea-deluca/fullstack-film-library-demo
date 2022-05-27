@@ -1,0 +1,45 @@
+@import "colors";
+
+.card-image {
+    height: 200px;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.favorite-icon {
+    transition: all 0.2s;
+}
+
+.favorite-icon.set-favorite:hover {
+    cursor: pointer;
+    color: $secondary !important;
+    -o-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+}
+
+.favorite-icon.unset-favorite:hover {
+    cursor: pointer;
+    color: $gray !important;
+    -o-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+}
+
+.star-icon {
+    transition: all 0.3s;
+}
+
+.star-icon.star-full:hover,
+.star-icon.star-empty:hover {
+    cursor: pointer;
+    -o-transform: scale(1.3);
+    -ms-transform: scale(1.3);
+    -moz-transform: scale(1.3);
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+}

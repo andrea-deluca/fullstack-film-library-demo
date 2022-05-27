@@ -1,7 +1,21 @@
+'use strict';
+const cors = require('cors');
 const express = require('express');
+const logger = require('morgan');
 
-const PORT = 3001;
+const filmsRouter = require('./routes/filmsRouter');
 
-app = new express();
+// Init express
+const PORT = 9000;
+const app = express();
 
-app.listen(PORT, ()=>console.log(`Server running on http://localhost:${PORT}/`));
+// Set-up middlewares
+app.use(logger('dev'));
+app.use(cors());
+app.use(express.json());
+
+/* ---  APIs  --- */
+app.use("/api", filmsRouter);
+
+
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}/`));
