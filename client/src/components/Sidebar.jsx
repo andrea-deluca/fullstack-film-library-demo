@@ -17,7 +17,7 @@ const Sidebar = () => {
             <Nav className="flex-column" variant='pills'>
                 {filters.map((filter, index) => {
                     return (
-                        <NavLink key={index} to={filter.url} className={({ isActive }) => !isActive ?
+                        <NavLink key={index} to={`/filter/${filter.url}`} className={({ isActive }) => !isActive ?
                             'sidebar-item fw-bold p-3 mb-3 rounded-3 text-decoration-none' :
                             'sidebar-item fw-bold p-3 mb-3 rounded-3 text-decoration-none bg-primary text-white'
                         }>

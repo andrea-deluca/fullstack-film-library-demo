@@ -6,54 +6,56 @@ import { faStar, faHeart, faTrash, faPencil } from '@fortawesome/free-solid-svg-
 import { faStar as faStarEmpty } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames';
 
+// Helpers
 import { getFormattedDate } from '../helpers/date';
+
+// Services
+import api from '../services/api';
 
 // Hooks
 import useModal from '../hooks/useModal';
+import useNotification from '../hooks/useNotification';
 
 // Components
 import ConfirmationModal from './ConfirmationModal';
-import axios from 'axios';
 
-const FilmCard = ({ film, deleteFilm, showMessage, setDirty }) => {
+const FilmCard = ({ film, setDirty }) => {
     const [loading, setLoading] = useState(false);
+    const notify = useNotification();
+
     const [modal, onShowModal, onHideModal, onConfirmModal] = useModal(() => {
         setLoading(true);
-        axios.delete(`api/films/delete-film/${film.id}`)
-            .then(() => {
+        api.deleteFilm(film.id)
+            .then((res) => {
                 setLoading(false);
                 setDirty(true);
+                notify.success(res);
             })
             .catch(err => {
                 setLoading(false);
-                console.log(err);
+                notify.error(err);
             })
-        // deleteFilm(film.id);
-        showMessage('Selected film has been removed successfully from your library.');
     });
 
-    const setRating = (rating) => {
+    const updateRating = (rating) => {
         if (rating !== film.rating) {
-            axios.put(`/api/films/update-rating/${film.id}`, {
-                rating: rating
-            })
+            api.updateRating(film.id, rating)
                 .then(() => {
                     setDirty(true);
                 })
                 .catch(err => {
-                    console.log(err);
+                    notify.error(err);
                 })
         }
     }
 
-    const setFavorite = (favorite) => {
-        axios.put(`/api/films/update-favorite/${film.id}`, {
-            favorite: favorite ? 1 : 0
-        }).then(() => {
-            setDirty(true);
-        }).catch((err) => {
-            console.log(err);
-        })
+    const updateFavorite = (favorite) => {
+        api.updateFavorite(film.id, favorite)
+            .then(() => {
+                setDirty(true);
+            }).catch((err) => {
+                notify.error(err);
+            })
     }
 
     const titleClass = classNames({
@@ -77,7 +79,7 @@ const FilmCard = ({ film, deleteFilm, showMessage, setDirty }) => {
                     <div className='d-flex justify-content-between'>
                         <Card.Title className={titleClass} style={{ transition: 'all .3s' }}>{film.title}</Card.Title>
                         <FontAwesomeIcon icon={faHeart} size='lg' className={iconClass}
-                            onClick={() => setFavorite(!film.favorite)} />
+                            onClick={() => updateFavorite(!film.favorite)} />
                     </div>
                     <Card.Text className='fw-light text-dark'>{film.plot ? film.plot : 'Nessuna descrizione disponibile.'}</Card.Text>
                 </Card.Body>
@@ -85,14 +87,14 @@ const FilmCard = ({ film, deleteFilm, showMessage, setDirty }) => {
                     <Card.Text className='fw-light text-muted mt-3'>{film.watchdate ? `Seen ${getFormattedDate(film.watchdate)}` : 'Unseen'}</Card.Text>
                     {film.rating > 0 && [...Array(film.rating)].map((item, index) => {
                         return <FontAwesomeIcon key={index} icon={faStar} className='text-secondary star-icon star-full me-1' onClick={() => {
-                            film.rating === 1 ? setRating(index) : setRating(index + 1)
+                            film.rating === 1 ? updateRating(index) : updateRating(index + 1)
                         }
                         } />
                     })}
                     {film.rating ? [...Array(5 - film.rating)].map((item, index) => {
-                        return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => setRating(film.rating + index + 1)} />
+                        return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => updateRating(film.rating + index + 1)} />
                     }) : [...Array(5)].map((item, index) => {
-                        return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => setRating(index + 1)} />
+                        return <FontAwesomeIcon key={index} icon={faStarEmpty} className='text-secondary star-icon star-empty me-1' onClick={() => updateRating(index + 1)} />
                     })}
                     <hr />
                     <Link to={`/update-film/${film.id}`}>

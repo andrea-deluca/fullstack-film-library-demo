@@ -6,7 +6,7 @@ import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 // Components
 import FilmForm from "../components/FilmForm";
 
-const AddFilm = ({ addFilm, showMessage }) => {
+const AddFilm = () => {
     const navigate = useNavigate()
 
     return (
@@ -17,7 +17,7 @@ const AddFilm = ({ addFilm, showMessage }) => {
                     <span className="m-0">Go back</span>
                 </Button>
                 <h1 className="fw-bold text-primary mb-5">Add a new film</h1>
-                <FilmForm addFilm={addFilm} showMessage={showMessage} />
+                <FilmForm/>
             </Col>
         </Row>
     );

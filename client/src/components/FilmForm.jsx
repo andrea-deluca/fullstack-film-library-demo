@@ -6,6 +6,12 @@ import { Formik, Form } from 'formik';
 // Helpers
 import { getToday } from '../helpers/date';
 
+// Services
+import api from '../services/api';
+
+// Hooks
+import useNotification from '../hooks/useNotification';
+
 // Constants
 import filmForm from '../constants/filmForm';
 
@@ -14,11 +20,11 @@ import FilmSchema from '../validations/FilmSchema';
 
 // Components
 import Input from './Input';
-import axios from 'axios';
 
-const FilmForm = ({ addFilm, updateFilm, update, showMessage, id, ...props }) => {
+const FilmForm = ({ update, id, ...props }) => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const notify = useNotification();
 
     const initialValues = update ? props.initialValues : {
         title: '',
@@ -42,26 +48,26 @@ const FilmForm = ({ addFilm, updateFilm, update, showMessage, id, ...props }) =>
         };
 
         if (update) {
-            axios.put(`/api/films/update-film/${id}`, film)
-                .then(() => {
-                    showMessage('Selected film has been successfully edited.')
+            api.updateFilm(id, film)
+                .then((res) => {
+                    setLoading(false);
+                    notify.success(res);
                     navigate(-1, { replace: true });
-                    setLoading(false);
                 })
-                .catch(err => {
-                    console.log(err);
+                .catch((err) => {
                     setLoading(false);
+                    notify.error(err);
                 })
         } else {
-            axios.post('/api/films/add-film', film)
-                .then(() => {
+            api.addFilm(film)
+                .then((res) => {
                     setLoading(false);
-                    showMessage('New film has been successfully inserted in your library.')
+                    notify.success(res);
                     navigate(-1, { replace: true });
                 })
-                .cathc(err => {
-                    console.log(err);
+                .catch(err => {
                     setLoading(false);
+                    notify.error(err);
                 })
         }
     }

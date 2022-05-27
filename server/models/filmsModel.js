@@ -111,10 +111,10 @@ module.exports = {
                 if (rows.length === 0) reject({ status: 404 });
                 else {
                     const id = rows.id + 1;
-                    const query = 'INSERT INTO films(id, title, favorite, watchdate, rating, user) VALUES(?,?, ?, ?, ?, ?)';
-                    db.run(query, [id, film.title, film.favorite, film.watchdate, film.rating, film.user], function (err) {
+                    const query = 'INSERT INTO films(id, title, plot, favorite, watchdate, rating, image, user) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+                    db.run(query, [id, film.title, film.plot, film.favorite, film.watchdate, film.rating, film.image, film.user], function (err) {
                         if (err) reject({ err: err.message, status: 500 });
-                        else resolve({ film: { id: this.lastID, ...film }, status: 200 });
+                        else resolve({ status: 200 });
                     });
                 }
             })
@@ -123,11 +123,10 @@ module.exports = {
 
     updateFilm: (data, id) => {
         return new Promise((resolve, reject) => {
-            console.log(data, id)
             const query = "UPDATE films SET title=?, plot=?, favorite=?, watchdate=?, rating=?, image=?, user=? WHERE id=?";
-            db.run(query, [data.title,  data.plot, data.favorite, data.watchdate, data.rating, data.image, data.user, id], function (err) {
+            db.run(query, [data.title, data.plot, data.favorite, data.watchdate, data.rating, data.image, data.user, id], function (err) {
                 if (err) reject({ err: err.message, status: 500 });
-                else resolve({ film: { id, ...data }, status: 200 });
+                else resolve({ status: 200 });
             })
         });
     },
@@ -137,7 +136,7 @@ module.exports = {
             const query = "UPDATE films SET favorite=? WHERE id=?";
             db.run(query, [data.favorite, id], (err) => {
                 if (err) reject({ err: err.message, status: 500 });
-                else resolve({ film: { ...data, id }, status: 200 });
+                else resolve({ status: 200 });
             })
         });
     },
@@ -147,7 +146,7 @@ module.exports = {
             const query = "UPDATE films SET rating=? WHERE id=?";
             db.run(query, [parseInt(data.rating), id], function (err) {
                 if (err) reject({ err: err.message, status: 500 });
-                else resolve({ film: { ...data, id }, status: 200 });
+                else resolve({ status: 200 });
             })
         });
     },

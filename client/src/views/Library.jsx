@@ -1,50 +1,53 @@
 import { useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
-import axios from 'axios';
+
+// Services
+import api from '../services/api';
 
 // Constants
 import filters from '../constants/filters';
+
+// Views
+import ErrorView from './ErrorView';
 
 // Components
 import SearchBar from '../components/SearchBar';
 import Sidebar from '../components/Sidebar';
 import FilteredLibrary from '../components/FilteredLibrary';
 
-import ServerError from '../views/ServerError';
-
-const Library = ({ library, setLibrary, updateLibrary, showMessage }) => {
+const Library = ({ library, setLibrary }) => {
     const [error, setError] = useState({});
     const [dirty, setDirty] = useState(true);
 
     const { filter } = useParams();
 
     useEffect(() => {
-        if(dirty){
-            axios.get(`/api/films/${filter}`)
-                .then(res => {
-                    setLibrary(res.data);
+        if (dirty) {
+            api.getFilms(filter)
+                .then(films => {
+                    setError({});
+                    setLibrary(films);
                     setDirty(false);
                 })
                 .catch(err => {
-                    console.log(err)
-                    err.response.status === 404 && setLibrary([]);
-                    err.response.status === 500 && setError({ show: true, message: err.message, error: err.response });
+                    err.status === 404 && setLibrary([]);
+                    err.status === 500 && setError({ show: true, ...err });
                 })
         }
     }, [setLibrary, filter, dirty]);
 
     const filterMatched = filters.find(item => {
-        return item.url.slice(1) === filter;
+        return item.url === filter;
     });
 
     if (!filterMatched) {
-        return <Navigate to={'/'} replace />
+        return <Navigate to={'/not-found'} replace />
     }
 
     if (error.show) {
         return (
-            <ServerError message={error.message} error={error.error} />
+            <ErrorView error={error} />
         )
     }
 
@@ -52,7 +55,7 @@ const Library = ({ library, setLibrary, updateLibrary, showMessage }) => {
         <Row className='p-4 my-4 flex-fill'>
             <SearchBar className="d-flex d-lg-none mb-5" />
             <Sidebar selectedFilter={filter} />
-            <FilteredLibrary library={library} setDirty={setDirty} updateLibrary={updateLibrary} showMessage={showMessage} />
+            <FilteredLibrary library={library} setDirty={setDirty} />
         </Row>
     );
 }

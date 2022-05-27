@@ -6,7 +6,7 @@ import { faFilm, faCirclePlus } from '@fortawesome/free-solid-svg-icons';
 // Components
 import FilmCard from './FilmCard'
 
-const FilteredLibrary = ({ library, updateLibrary, showMessage, setDirty }) => {
+const FilteredLibrary = ({ library, setDirty }) => {
     return (
         <Col xs={{ span: 12 }} lg={{ span: 9 }} className='mt-5 mt-lg-0'>
             <div className='d-flex justify-content-between'>
@@ -30,14 +30,7 @@ const FilteredLibrary = ({ library, updateLibrary, showMessage, setDirty }) => {
                 {library.length === 0 ? <h6 className='my-5 text-dark'>I'm sorry... no films were found here.</h6>
                     : library.map((film, index) => {
                         return (
-                            <FilmCard
-                                key={index}
-                                film={film}
-                                setFavorite={() => updateLibrary.setFavorite(film.id)}
-                                setRating={updateLibrary.setRating}
-                                deleteFilm={() => updateLibrary.deleteFilm(film.id)}
-                                showMessage={showMessage} 
-                                setDirty={setDirty} />
+                            <FilmCard key={index} film={film} setDirty={setDirty} />
                         )
                     })}
             </CardGroup>

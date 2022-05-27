@@ -1,17 +1,15 @@
 import { Container } from "react-bootstrap";
+import { ToastContainer } from "react-toastify";
 
 // Components
 import Navbar from './Navbar';
 import Footer from './Footer';
-import SuccessMessage from './SuccessMessage'
 
-const AppContainer = ({ message, hideMessage, ...props }) => {
+const AppContainer = ({ ...props }) => {
     return (
         <Container fluid className="app-container">
+            <ToastContainer newestOnTop={false} />
             < Navbar />
-            <SuccessMessage show={message.show} onClose={hideMessage}>
-                {message.response}
-            </SuccessMessage>
             {props.children}
             < Footer />
         </Container>

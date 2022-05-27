@@ -1,31 +1,50 @@
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Row, Col, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft } from "@fortawesome/free-solid-svg-icons";
 
 // Helpers
-import { getDate, getToday } from "../helpers/date";
+import { getToday } from "../helpers/date";
+
+// Services
+import api from "../services/api";
+
+// Views
+import ErrorView from "./ErrorView";
 
 // Components
 import FilmForm from "../components/FilmForm";
 
-const UpdateFilm = ({ updateFilm, library, showMessage }) => {
+const UpdateFilm = () => {
+    const [initialValues, setInitialValues] = useState();
+    const [error, setError] = useState({});
+    const { id } = useParams();
     const navigate = useNavigate();
-    const { filmID } = useParams();
 
-    const filmToEdit = library.find((film) => {
-        return film.id === parseInt(filmID);
-    });
+    useEffect(() => {
+        api.getFilm(id)
+            .then(film => {
+                setError({});
+                const values = {
+                    ...film,
+                    plot: film.plot || "",
+                    image: film.image || "",
+                    watchDateSwitch: film.watchdate || false,
+                    watchdate: film.watchdate || getToday(),
+                };
+                setInitialValues(values);
+            })
+            .catch(err => {
+                setError({ show: true, ...err });
+            })
+    }, [id])
 
-    const initialValues = {
-        ...filmToEdit,
-        plot: filmToEdit.plot ? filmToEdit.plot : "",
-        rating: filmToEdit.rating,
-        image: filmToEdit.image ? filmToEdit.image : "",
-        favorite: filmToEdit.favorite === 1 ? true : false,
-        watchDateSwitch: filmToEdit.watchdate ? true : false,
-        watchdate: filmToEdit.watchdate ? getDate(filmToEdit.watchdate) : getToday(),
-    };
+    if (error.show) {
+        return (
+            <ErrorView error={error} />
+        )
+    }
 
     return (
         <Row className="p-4 my-4 flex-fill">
@@ -35,7 +54,7 @@ const UpdateFilm = ({ updateFilm, library, showMessage }) => {
                     <span className="m-0">Go back</span>
                 </Button>
                 <h1 className="fw-bold text-primary mb-5">Edit film</h1>
-                <FilmForm update id={parseInt(filmID)} updateFilm={updateFilm} initialValues={initialValues} showMessage={showMessage} />
+                {initialValues && <FilmForm update id={id} initialValues={initialValues} />}
             </Col>
         </Row>
     );
