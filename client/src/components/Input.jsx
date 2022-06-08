@@ -11,7 +11,7 @@ const Input = ({ id, name, type, placeholder, ...props }) => {
     })
 
     const fieldClass = classNames({
-        'form-control': type === 'text' || type === 'date',
+        'form-control': type === 'text' || type === 'date' || type === 'email' || type === 'password',
         'form-select': props.as === 'select',
         'form-check-input': type === 'checkbox',
         'is-invalid': type !== 'checkbox' && meta.touched && meta.error,

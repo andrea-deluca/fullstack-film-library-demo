@@ -49,9 +49,9 @@ const FilmForm = ({ update, id, ...props }) => {
 
         if (update) {
             api.updateFilm(id, film)
-                .then((res) => {
+                .then(() => {
                     setLoading(false);
-                    notify.success(res);
+                    notify.success("Film successfully edited");
                     navigate(-1, { replace: true });
                 })
                 .catch((err) => {
@@ -60,15 +60,12 @@ const FilmForm = ({ update, id, ...props }) => {
                 })
         } else {
             api.addFilm(film)
-                .then((res) => {
-                    setLoading(false);
-                    notify.success(res);
+                .then(() => {
+                    notify.success("Film successfully added");
                     navigate(-1, { replace: true });
                 })
-                .catch(err => {
-                    setLoading(false);
-                    notify.error(err);
-                })
+                .catch(err => notify.error(err))
+                .finally(() => setLoading(false));
         }
     }
     return (

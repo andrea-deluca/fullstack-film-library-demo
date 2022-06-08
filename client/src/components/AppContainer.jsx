@@ -5,11 +5,11 @@ import { ToastContainer } from "react-toastify";
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-const AppContainer = ({ ...props }) => {
+const AppContainer = ({ setLibrary, ...props }) => {
     return (
         <Container fluid className="app-container">
             <ToastContainer newestOnTop={false} />
-            < Navbar />
+            < Navbar setLibrary={setLibrary} />
             {props.children}
             < Footer />
         </Container>

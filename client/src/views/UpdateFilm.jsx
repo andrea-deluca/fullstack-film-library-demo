@@ -30,7 +30,8 @@ const UpdateFilm = () => {
                     ...film,
                     plot: film.plot || "",
                     image: film.image || "",
-                    watchDateSwitch: film.watchdate || false,
+                    favorite: film.favorite === 1 ? true : false,
+                    watchDateSwitch: film.watchdate ? true : false,
                     watchdate: film.watchdate || getToday(),
                 };
                 setInitialValues(values);
