@@ -10,7 +10,7 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         api.getUserInfo()
             .then((user) => {
-                setUser({ ...user, loggedIn: true });
+                setUser({ user: { ...user }, loggedIn: true });
             })
             .catch(() => {
                 setUser({ user: undefined, loggedIn: false });

@@ -19,7 +19,7 @@ router.post('/', [
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty())
-    return res.status(422).json("Incorrect username e/o password");
+    return res.status(422).json("Incorrect username or password");
     passport.authenticate('local', (err, user) => {
         if (err) return res.status(err.status).json(err.message);
 
@@ -44,7 +44,7 @@ router.delete('/current', (req, res, next) => {
 router.get('/current', (req, res) => {
     if (req.isAuthenticated())
         return res.status(200).json(req.user);
-    res.status(401).json({ message: 'Not authenticated' });
+    res.status(401).json('Not authenticated');
 })
 
 module.exports = router;

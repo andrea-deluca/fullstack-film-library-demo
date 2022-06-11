@@ -8,7 +8,7 @@ module.exports = {
             const query = 'SELECT * FROM users WHERE email = ?';
             db.get(query, [email], (err, row) => {
                 if (err) reject({ message: err.message, status: 500 });
-                else if (!row) reject({ message: "Incorrect username", status: 404 });
+                else if (!row) reject({ message: "No user found", status: 404 });
                 else resolve({ user: row, status: 200 })
             })
         })

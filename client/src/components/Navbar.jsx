@@ -10,7 +10,7 @@ import SearchBar from './SearchBar';
 import api from '../services/api';
 import useNotification from '../hooks/useNotification';
 
-const Navbar = ({setLibrary}) => {
+const Navbar = ({ setLibrary }) => {
     const [session, setSession] = useContext(AuthContext);
     const navigate = useNavigate();
     const notify = useNotification();

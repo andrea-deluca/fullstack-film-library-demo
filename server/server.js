@@ -22,12 +22,13 @@ passport.use(
                     const passwordHex = Buffer.from(res.user.hash, 'hex');
 
                     if (!crypto.timingSafeEqual(passwordHex, hashedPassword))
-                        return done({ message: 'Incorrect password', status: 401 });
+                        return done({ message: 'Incorrect username or password', status: 401 });
                     return done(null, { id: res.user.id, email: res.user.email, name: res.user.name });
                 })
             })
             .catch(err => {
-                return done(err);
+                if (err.status === 404) return done({ message: 'Incorrect username or password', status: 401 });
+                else return done(err);
             })
     })
 );
@@ -53,14 +54,17 @@ const app = express();
 app.use(session({
     secret: 'a secret sentence not to share with anybody and anywhere, userd to sign the session ID cookie',
     resave: false,
-    saveUninitalized: false
+    saveUninitialized: false
 }))
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Set-up middlewares
 app.use(logger("dev"));
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 app.use(express.json());
 
 /* ---  APIs  --- */

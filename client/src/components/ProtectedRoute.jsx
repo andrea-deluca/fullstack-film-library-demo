@@ -9,10 +9,9 @@ const ProtectedRoute = () => {
     useEffect(() => {
         if (!session.loggedIn)
             navigate('/', { replace: true });
-    }, [navigate, session]);
+    }, [session.loggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    if (session.loggedIn)
-        return <Outlet />
+    if (session.loggedIn) return <Outlet />
 }
 
 export default ProtectedRoute;

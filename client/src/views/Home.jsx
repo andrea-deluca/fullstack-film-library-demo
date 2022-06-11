@@ -12,7 +12,7 @@ const Home = () => {
     useEffect(() => {
         if (session.loggedIn)
             navigate('/filter/all', { replace: true });
-    }, [navigate, session.loggedIn]);
+    }, [session.loggedIn]); // eslint-disable-line react-hooks/exhaustive-deps
 
     if (!session.loggedIn)
         return (
