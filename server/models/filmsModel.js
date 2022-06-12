@@ -124,7 +124,6 @@ module.exports = {
         });
     },
 
-    //Delete a new film
     deleteFilm: (id, user) => {
         return new Promise((resolve, reject) => {
             const query = "DELETE FROM films WHERE id=? and user = ?";
