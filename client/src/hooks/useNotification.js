@@ -1,14 +1,5 @@
 import { toast } from "react-toastify";
 
-const Message = ({ response }) => {
-    return (
-        <div className="ms-2">
-            <h6 className="fw-bold">{response.status} {response.statusText}</h6>
-            <p className="">{response.message}</p>
-        </div>
-    );
-}
-
 const useNotification = () => {
     const notification = {
         autoClose: 5000,
@@ -23,7 +14,7 @@ const useNotification = () => {
 
     const notify = {
         error: (error) => {
-            toast.error(<Message response={error} />, {
+            toast.error(error, {
                 type: toast.TYPE.ERROR,
                 position: toast.POSITION.TOP_RIGHT,
                 theme: 'colored',
@@ -32,7 +23,7 @@ const useNotification = () => {
         },
 
         success: (response) => {
-            toast.success(<Message response={response} />, {
+            toast.success(response, {
                 type: toast.TYPE.SUCCESS,
                 position: toast.POSITION.TOP_RIGHT,
                 theme: 'colored',

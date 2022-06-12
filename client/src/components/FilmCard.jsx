@@ -26,36 +26,26 @@ const FilmCard = ({ film, setDirty }) => {
     const [modal, onShowModal, onHideModal, onConfirmModal] = useModal(() => {
         setLoading(true);
         api.deleteFilm(film.id)
-            .then((res) => {
-                setLoading(false);
+            .then(() => {
                 setDirty(true);
-                notify.success(res);
+                notify.success("Film successfully deleted");
             })
-            .catch(err => {
-                setLoading(false);
-                notify.error(err);
-            })
+            .catch(err => notify.error(err))
+            .finally(() => setLoading(false));
     });
 
     const updateRating = (rating) => {
         if (rating !== film.rating) {
             api.updateRating(film.id, rating)
-                .then(() => {
-                    setDirty(true);
-                })
-                .catch(err => {
-                    notify.error(err);
-                })
+                .then(() => setDirty(true))
+                .catch(err => notify.error(err));
         }
     }
 
     const updateFavorite = (favorite) => {
         api.updateFavorite(film.id, favorite)
-            .then(() => {
-                setDirty(true);
-            }).catch((err) => {
-                notify.error(err);
-            })
+            .then(() => setDirty(true))
+            .catch((err) => notify.error(err));
     }
 
     const titleClass = classNames({

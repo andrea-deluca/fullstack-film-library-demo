@@ -35,7 +35,7 @@ const Library = ({ library, setLibrary }) => {
                     err.status === 500 && setError({ show: true, ...err });
                 })
         }
-    }, [setLibrary, filter, dirty]);
+    }, [filter, dirty]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const filterMatched = filters.find(item => {
         return item.url === filter;

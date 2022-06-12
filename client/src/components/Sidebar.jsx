@@ -8,7 +8,7 @@ import filters from '../constants/filters';
 
 const Sidebar = () => {
     return (
-        <Col xs={{ span: 12 }} lg={{ span: 3 }}>
+        <Col xs={{ span: 12 }} lg={{ span: 3 }} className="h-100">
             <h3 className='fw-bold text-dark mb-3'>
                 <FontAwesomeIcon icon={faFilter} className='me-2' />
                 Filters
