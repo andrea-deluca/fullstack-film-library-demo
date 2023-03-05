@@ -1,13 +1,11 @@
-# BigLab 2 - Class: 2022 AW1
+This project has been developed by team described below for the course of "Applicazioni Web I", attended during the academic year 2021/22 at Politecnico di Torino, Master's Degree in Computer Engineering.
 
-## Team name: BYTECODERS
+## Team members
 
-Team members:
-
-- s302094 ANDRIANO DAVIDE
-- s302056 BELARDO ANNA LISA
-- s303906 DELUCA ANDREA
-- s303907 TAMBURO LUCA
+- ANDRIANO DAVIDE
+- BELARDO ANNA LISA
+- DELUCA ANDREA
+- TAMBURO LUCA
 
 ## Instructions
 
